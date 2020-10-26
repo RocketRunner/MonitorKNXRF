@@ -146,6 +146,15 @@ uint8_t saveSensorData(uint8_t* dataBuffer, uint32_t len, SensorKNXRF *&sensorLi
                 updatedData = true;
                 if(cc1101_debug > 1){                                    //debug output messages
                     syslog(LOG_INFO, "MonitorKNXRF: Updated sensor: %04X%08X \r\n", serialNoHighWord, serialNoLowWord);
+                    syslog(LOG_INFO, "------> Got data from %04X%08X : Battery: %d | Temp: %d | Target temp: %d | RSSI: %d | CRC: %d \r\n",
+                            currentSensor->serialNoHighWord,
+                            currentSensor->serialNoLowWord,
+                            currentSensor->batteryOK,
+                            transformTemperature(currentSensor->sensorData[1]),
+                            transformTemperature(currentSensor->sensorData[2]),
+                            currentSensor->rssi,
+                            currentSensor->crcOK);
+
                     dumbSensorData(currentSensor, "------>");
                 }
             } else {
@@ -171,17 +180,19 @@ void dumbSensorData(SensorKNXRF *&currentSensor){
 }
 
 void dumbSensorData(SensorKNXRF *&currentSensor, const char * preText){
-    if(currentSensor){
-        printf("%sGot data from %04X%08X : Battery: %d | Temp: %d | Target temp: %d | RSSI: %d | CRC: %d \n",
-               preText,
-               currentSensor->serialNoHighWord,
-               currentSensor->serialNoLowWord,
-               currentSensor->batteryOK,
-               transformTemperature(currentSensor->sensorData[1]),
-               transformTemperature(currentSensor->sensorData[2]),
-               currentSensor->rssi,
-               currentSensor->crcOK);
-        fflush(stdout) ;
+    if(cc1101_debug > 0){
+        if(currentSensor){
+            printf("%s Got data from %04X%08X : Battery: %d | Temp: %d | Target temp: %d | RSSI: %d | CRC: %d \n",
+                   preText,
+                   currentSensor->serialNoHighWord,
+                   currentSensor->serialNoLowWord,
+                   currentSensor->batteryOK,
+                   transformTemperature(currentSensor->sensorData[1]),
+                   transformTemperature(currentSensor->sensorData[2]),
+                   currentSensor->rssi,
+                   currentSensor->crcOK);
+            fflush(stdout) ;
+        }
     }
 }
 
