@@ -10,6 +10,7 @@
 #include <systemd/sd-daemon.h> // needed for sd_notify, if compiler error try to run >> sudo apt-get install libsystemd-dev
 #include "cc1101.h"
 #include "sensorKNXRF.h"
+#include "mosquittoClient.h"
 
 #define GDO0idx 0
 #define GDO2idx 1
@@ -88,10 +89,11 @@ int main (int argc, char* argv[])
 /* 	wiringPiISR (GDO0, INT_EDGE_RISING, &cc1101InterruptGDO0) ; */
 	wiringPiISR (GDO2, INT_EDGE_RISING, &cc1101InterruptGDO2) ;
 
-
-
 	cc1101.show_register_settings();
-	
+
+
+    class mosquittoClient * mqttClient = new mosquittoClient(MQTT_CLIENT_ID, MQTT_HOST, MQTT_PORT);
+
 
 	try {
 		while (!stopprogram) { 
@@ -113,6 +115,7 @@ int main (int argc, char* argv[])
 				syslog(LOG_INFO, s);
 				piLock(GDO2idx);
 				sendSensorData(sensorBuffer);
+				mqttClient->send_message("topic", "payload");
 				//sendSensorData(sensorBuffer, itemList);
 				piUnlock(GDO2idx);
 				delay(1);

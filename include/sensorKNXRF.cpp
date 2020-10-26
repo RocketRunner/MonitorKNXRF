@@ -6,7 +6,6 @@
 #include "cc1101.h"
 #include "Crc16.h"
 
-
 extern uint8_t cc1101_debug;
 
 SensorKNXRF::SensorKNXRF(void) {
