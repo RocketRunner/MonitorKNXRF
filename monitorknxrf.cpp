@@ -10,7 +10,6 @@
 #include <systemd/sd-daemon.h> // needed for sd_notify, if compiler error try to run >> sudo apt-get install libsystemd-dev
 #include "cc1101.h"
 #include "sensorKNXRF.h"
-#include "openhabRESTInterface.h"
 
 #define GDO0idx 0
 #define GDO2idx 1
@@ -64,7 +63,6 @@ void cc1101InterruptGDO2(void) {
 int main (int argc, char* argv[])
 {
 	char s[256];
-	OpenhabItem *itemList = NULL;	
 	uint8_t addrCC1101 = 0;
 	int internalWD = 0;
 	int exitCode = EXIT_SUCCESS;
@@ -99,22 +97,30 @@ int main (int argc, char* argv[])
 		while (!stopprogram) { 
 			delay(15000);
 			sd_notify(0,"WATCHDOG=1");
-			syslog(LOG_INFO, "MonitorKNXRF is requesting data from Openhab.");
-			parseOpenhabItems(getOpenhabItems("RoomThermostat"), itemList);
 			internalWD++;
 			while (sensorBuffer) {
-				sprintf(s, "MonitorKNXRF got data from sensor %04X%08X reading %d and %d.", 
-						sensorBuffer->serialNoHighWord, sensorBuffer->serialNoLowWord, transformTemperature(sensorBuffer->sensorData[1]), transformTemperature(sensorBuffer->sensorData[2]));
+				
+				sprintf(s, "MonitorKNXRF got data from sensor %04X%08X : Battery: %d | Temp: %d | Target temp: %d | RSSI: %d",
+					sensorBuffer->serialNoHighWord,
+					sensorBuffer->serialNoLowWord,
+					sensorBuffer->batteryOK,
+					transformTemperature(sensorBuffer->sensorData[1]),
+					transformTemperature(sensorBuffer->sensorData[2]),
+					sensorBuffer->rssi);
+				
+				//sprintf(s, "MonitorKNXRF got data from sensor %04X%08X reading %d and %d.", 
+				//		sensorBuffer->serialNoHighWord, sensorBuffer->serialNoLowWord, transformTemperature(sensorBuffer->sensorData[1]), transformTemperature(sensorBuffer->sensorData[2]));
 				syslog(LOG_INFO, s);
 				piLock(GDO2idx);
-				sendSensorData(sensorBuffer, itemList);
+				sendSensorData(sensorBuffer);
+				//sendSensorData(sensorBuffer, itemList);
 				piUnlock(GDO2idx);
 				delay(1);
 				internalWD = 0;
 			}
-			if (internalWD > 8) {
+			if (internalWD > 40) {
 				stopprogram = 1; 
-				syslog(LOG_ERR, "MonitorKNXRF stopping due to no data received from CC1101");
+				syslog(LOG_ERR, "MonitorKNXRF stopping due to no data received from CC1101 in 10 minutes");
 				exitCode = EXIT_FAILURE;
 			}
 		}

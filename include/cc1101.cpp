@@ -117,7 +117,57 @@ static uint8_t cc1101_2FSK_32_7_kb[CFG_REGISTER] = {
 					0x81,  // TEST2         Various Test Settings
 					0x35,  // TEST1         Various Test Settings
 					0x09   // TEST0         Various Test Settings
-               };			   
+               };
+
+static uint8_t cc1101_2FSK_32_7_kb_II[CFG_REGISTER] = {
+					0x00,  // IOCFG2        GDO2 Output Pin Configuration
+					0x2E,  // IOCFG1        GDO1 Output Pin Configuration
+					0x06,  // IOCFG0        GDO0 Output Pin Configuration
+					0x40,  // FIFOTHR       RX FIFO and TX FIFO Thresholds
+					0x76,  // SYNC1         Sync Word
+					0x96,  // SYNC0         Sync Word
+		 CC1101_DATA_LEN,  // PKTLEN        Packet Length
+					0x04,  // PKTCTRL1      Packet Automation Control
+					0x00,  // PKTCTRL0      Packet Automation Control
+					0x00,  // ADDR          Device Address
+					0x00,  // CHANNR        Channel Number
+					0x08,  // FSCTRL1       Frequency Synthesizer Control
+					0x00,  // FSCTRL0       Frequency Synthesizer Control
+					0x21,  // FREQ2         Frequency Control Word
+					0x65,  // FREQ1         Frequency Control Word
+					0x6A,  // FREQ0         Frequency Control Word
+					0x6A,  // MDMCFG4       Modem Configuration
+					0x4A,  // MDMCFG3       Modem Configuration
+					0x05,  // MDMCFG2       Modem Configuration
+					0x22,  // MDMCFG1       Modem Configuration
+					0xF8,  // MDMCFG0       Modem Configuration
+					0x47,  // DEVIATN       Modem Deviation Setting
+					0x07,  // MCSM2         Main Radio Control State Machine Configuration
+					0x30,  // MCSM1         Main Radio Control State Machine Configuration
+					0x18,  // MCSM0         Main Radio Control State Machine Configuration
+					0x2E,  // FOCCFG        Frequency Offset Compensation Configuration
+					0x6D,  // BSCFG         Bit Synchronization Configuration
+					0x43,  // AGCCTRL2      AGC Control
+					0x40,  // AGCCTRL1      AGC Control
+					0x91,  // AGCCTRL0      AGC Control
+					0x87,  // WOREVT1       High Byte Event0 Timeout
+					0x6B,  // WOREVT0       Low Byte Event0 Timeout
+					0xFB,  // WORCTRL       Wake On Radio Control
+					0xB6,  // FREND1        Front End RX Configuration
+					0x10,  // FREND0        Front End TX Configuration
+					0xE9,  // FSCAL3        Frequency Synthesizer Calibration
+					0x2A,  // FSCAL2        Frequency Synthesizer Calibration
+					0x00,  // FSCAL1        Frequency Synthesizer Calibration
+					0x1F,  // FSCAL0        Frequency Synthesizer Calibration
+					0x41,  // RCCTRL1       RC Oscillator Configuration
+					0x00,  // RCCTRL0       RC Oscillator Configuration
+					0x59,  // FSTEST        Frequency Synthesizer Calibration Control
+					0x7F,  // PTEST         Production Test
+					0x3F,  // AGCTEST       AGC Test
+					0x81,  // TEST2         Various Test Settings
+					0x35,  // TEST1         Various Test Settings
+					0x09   // TEST0         Various Test Settings
+               };	
 
 static uint8_t cc1101_GFSK_38_4_kb[CFG_REGISTER] = {
                     0x00,  // IOCFG2        GDO2 Output Pin Configuration
@@ -1015,6 +1065,9 @@ void CC1101::set_mode(uint8_t mode)
                     break;
         case 0x07:
                     spi_write_burst(WRITE_BURST,cc1101_OOK_4_8_kb,CFG_REGISTER);
+                    break;
+        case 0x08:
+                    spi_write_burst(WRITE_BURST,cc1101_2FSK_32_7_kb_II,CFG_REGISTER);
                     break;
         default:
                     spi_write_burst(WRITE_BURST,cc1101_GFSK_100_kb,CFG_REGISTER);
