@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <string>
+#include "mosquittoClient.h"
 
 #define MAXSENSORDATA 30
 
@@ -50,7 +51,7 @@ uint8_t saveSensorData(uint8_t* data, uint32_t len, SensorKNXRF *&sensorList);
 
 uint16_t transformTemperature(uint16_t data);
 
-void sendSensorData(SensorKNXRF *&currentSensor);
+void sendSensorData(SensorKNXRF *&currentSensor, mosquittoClient * mqttClient);
 void dumbSensorData(SensorKNXRF *&currentSensor);
 void dumbSensorData(SensorKNXRF *&currentSensor,const char * preText);
 

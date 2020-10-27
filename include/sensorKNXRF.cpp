@@ -195,13 +195,56 @@ void dumbSensorData(SensorKNXRF *&currentSensor, const char * preText){
     }
 }
 
-void sendSensorData(SensorKNXRF *&currentSensor){
+void sendSensorData(SensorKNXRF *&currentSensor, mosquittoClient * mqttClient){
     if (currentSensor) {
-        //...
-        //TODO check valid data
+        SensorKNXRF *tempSensor;
+        tempSensor = currentSensor;
+
+        //TODO ITERATE OVER SENSORS
         dumbSensorData(currentSensor);
 
-        SensorKNXRF *tempSensor = currentSensor;
+        if(tempSensor->sensorData[1] != 0xFFFF){
+            char topic[100];
+            snprintf(topic, sizeof topic, "home/%04X%08X/temperature", tempSensor->serialNoHighWord, tempSensor->serialNoLowWord);
+
+            char payload[100];
+            double temperature = transformTemperature(tempSensor->sensorData[1])/100;
+            sprintf(payload, "%f", temperature);
+
+            mqttClient->send_message(topic, payload);
+        }
+
+        if(tempSensor->sensorData[2] != 0xFFFF){
+            char topic[100];
+            snprintf(topic, sizeof topic, "home/%04X%08X/temperature-target", tempSensor->serialNoHighWord, tempSensor->serialNoLowWord);
+
+            char payload[100];
+            double temperature = transformTemperature(tempSensor->sensorData[2])/100;
+            sprintf(payload, "%f", temperature);
+
+            mqttClient->send_message(topic, payload);
+        }
+
+        if(1) {
+            char topic[100];
+            snprintf(topic, sizeof topic, "home/%04X%08X/battery", tempSensor->serialNoHighWord, tempSensor->serialNoLowWord);
+
+            char payload[100];
+            sprintf(payload, "%d", tempSensor->batteryOK);
+
+            mqttClient->send_message(topic, payload);
+        }
+
+        if(1) {
+            char topic[100];
+            snprintf(topic, sizeof topic, "home/%04X%08X/rssi", tempSensor->serialNoHighWord, tempSensor->serialNoLowWord);
+
+            char payload[100];
+            sprintf(payload, "%d", tempSensor->rssi);
+
+            mqttClient->send_message(topic, payload);
+        }
+
         currentSensor = currentSensor->next;
         delete tempSensor;
     }

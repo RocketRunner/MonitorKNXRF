@@ -29,6 +29,7 @@ public:
     mosquittoClient(const char *id, const char *host, int port);
     ~mosquittoClient();
     bool send_message(const char *_topic, const char *_message);
+
 };
 
 #endif
