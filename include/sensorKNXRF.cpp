@@ -204,7 +204,7 @@ void sendSensorData(SensorKNXRF *&currentSensor, mosquittoClient * mqttClient){
 
         if(tempSensor->sensorData[1] != 0xFFFF){
             char topic[100];
-            snprintf(topic, sizeof topic, "home/uponor/%04X%08X/temperature-actual", tempSensor->serialNoHighWord, tempSensor->serialNoLowWord);
+            snprintf(topic, sizeof topic, "home/uponor/%04X%08X/temperature", tempSensor->serialNoHighWord, tempSensor->serialNoLowWord);
 
             char payload[100];
             double temperature = transformTemperature(tempSensor->sensorData[1]);

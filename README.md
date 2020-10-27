@@ -68,7 +68,7 @@ sudo systemctl enable knx-monitor.service
 
 
 ## MQTT Topic
- * home/uponor/<SENSOR_ID>/temperature-actual
+ * home/uponor/<SENSOR_ID>/temperature
  * home/uponor/<SENSOR_ID>/temperature-target
  * home/uponor/<SENSOR_ID>/battery-ok
  * ome/uponor/<SENSOR_ID>/rssi
