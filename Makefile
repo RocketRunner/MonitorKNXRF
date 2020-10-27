@@ -1,15 +1,12 @@
 # What to call the final executable
-TARGET = monknxrf
+TARGET = knx-monitor
 
 OBJS= monitorknxrf.o cc1101.o sensorKNXRF.o mosquittoClient.o
 
 # What compiler to use
 CC = g++
 
-#CFLAGS = -c -Wall -I/home/openhabian/jsmn -Iinclude/
 CFLAGS = -c -Wall -Iinclude/
-
-#LDFLAGS = -L/home/openhabian/jsmn
 
 LIBS = -lwiringPi -lsystemd -lmosquittopp
 

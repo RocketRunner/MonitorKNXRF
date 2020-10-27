@@ -5,7 +5,7 @@ After=network-online.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/monknxrf
+ExecStart=/usr/bin/knx-monitor
 WatchdogSec=30
 Restart=always
 TimeoutStopSec=60

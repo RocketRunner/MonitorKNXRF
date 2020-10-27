@@ -33,7 +33,7 @@ openhabian@hab:~/MonitorKNXRF$ make
 
 Run the program with debug level 2:
 ```
-./monknxrf 2
+./knx-monitor 2
 ```
 Change set temperature on any of your thermostats, and wait a minimum 15 seconds.
 Press Ctrl+C to stop the program.
@@ -41,17 +41,17 @@ Then check the log:
 ```
 grep -in monitorknxrf /var/log/syslog
 ...
-24447:Jan  2 12:09:00 hab monknxrf: MonitorKNXRF is requesting data from Openhab.
-24448:Jan  2 12:09:00 hab monknxrf: MonitorKNXRF got data from sensor 007402363C12 reading 2232 and 1950.
-24451:Jan  2 12:09:00 hab monknxrf: MonitorKNXRF: marcstate: 0x01
+24447:Jan  2 12:09:00 hab knx-monitor: MonitorKNXRF is requesting data from Openhab.
+24448:Jan  2 12:09:00 hab knx-monitor: MonitorKNXRF got data from sensor 007402363C12 reading 2232 and 1950.
+24451:Jan  2 12:09:00 hab knx-monitor: MonitorKNXRF: marcstate: 0x01
 
 ```
 In this case the actual temperature is 22.32 C and the set temperature is 19.5 C.
 
 To make the program running as a system service you need to copy the the systemd files as this:
 ```
-sudo cp monknxrf /usr/bin/.
-sudo cp monitorknxrf.service /usr/lib/systemd/system/.
+sudo cp knx-monitor /usr/bin/.
+sudo cp knx-monitor.service /usr/lib/systemd/system/.
 ```
 
 When the Raspberry is restarted the program should start automatically. It is possible to manually start/stop and check the status of the program:
@@ -61,10 +61,10 @@ When the Raspberry is restarted the program should start automatically. It is po
 ● monitorknxrf.service - Service to collect KNX RF data and send to openhab2 via the REST API
    Loaded: loaded (/usr/lib/systemd/system/monitorknxrf.service; enabled)
    Active: active (running) since Thu 2020-01-02 12:33:25 CET; 2s ago
- Main PID: 16235 (monknxrf)
+ Main PID: 16235 (knx-monitor)
    CGroup: /system.slice/monitorknxrf.service
-           └─16235 /usr/bin/monknxrf
+           └─16235 /usr/bin/knx-monitor
 
 Jan 02 12:33:25 hab systemd[1]: Started Service to collect KNX RF data and send to openhab2 via the REST API.
-Jan 02 12:33:25 hab monknxrf[16235]: MonitorKNXRF started
+Jan 02 12:33:25 hab knx-monitor[16235]: MonitorKNXRF started
 ```
