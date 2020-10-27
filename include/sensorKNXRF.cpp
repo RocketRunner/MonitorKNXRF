@@ -208,7 +208,8 @@ void sendSensorData(SensorKNXRF *&currentSensor, mosquittoClient * mqttClient){
             snprintf(topic, sizeof topic, "home/%04X%08X/temperature", tempSensor->serialNoHighWord, tempSensor->serialNoLowWord);
 
             char payload[100];
-            double temperature = transformTemperature(tempSensor->sensorData[1])/100;
+            double temperature = transformTemperature(tempSensor->sensorData[1]);
+            temperature  = temperature/100;
             sprintf(payload, "%f", temperature);
 
             mqttClient->send_message(topic, payload);
@@ -219,7 +220,8 @@ void sendSensorData(SensorKNXRF *&currentSensor, mosquittoClient * mqttClient){
             snprintf(topic, sizeof topic, "home/%04X%08X/temperature-target", tempSensor->serialNoHighWord, tempSensor->serialNoLowWord);
 
             char payload[100];
-            double temperature = transformTemperature(tempSensor->sensorData[2])/100;
+            double temperature = transformTemperature(tempSensor->sensorData[2]);
+            temperature  = temperature/100;
             sprintf(payload, "%f", temperature);
 
             mqttClient->send_message(topic, payload);
