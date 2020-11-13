@@ -1,4 +1,4 @@
-FROM arm32v7/alpine:3.12
+FROM arm32v7/debian:10-slim
 
 RUN apt-get install libsystemd-dev
 RUN apt-get install wiringpi
