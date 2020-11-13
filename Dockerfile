@@ -11,6 +11,4 @@ RUN apt-get update && apt-get install -y \
 RUN mkdir /home/knx
 COPY . /home/knx/
 WORKDIR /home/knx
-RUN ls -al
-RUN make
-RUN ls -al
+RUN make --always-make
