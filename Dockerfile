@@ -12,5 +12,5 @@ RUN mkdir /home/knx
 COPY . /home/knx/
 WORKDIR /home/knx
 RUN ls -al
-RUN ./make
+RUN make
 RUN ls -al
