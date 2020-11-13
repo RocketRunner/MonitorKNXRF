@@ -1,9 +1,11 @@
 FROM arm32v7/debian:10-slim
 
-RUN apt-get update
-RUN apt-get -y install libmosquittopp-dev
-RUN apt-get -y install wiringpi
-RUN apt-get -y install libsystemd-dev
+RUN apt-get update && apt-get install -y \
+  libmosquittopp-dev \
+  libsystemd-dev \
+  --no-install-recommends
+
+#RUN apt-get -y install wiringpi
 
 RUN mkdir /home/knx
 COPY . /home/knx/
