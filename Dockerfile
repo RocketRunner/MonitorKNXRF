@@ -9,12 +9,16 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /home/knx
 
-RUN git clone https://github.com/WiringPi/WiringPi.git
-RUN cd WiringPi && ./build
+#RUN git clone https://github.com/WiringPi/WiringPi.git
+#RUN cd WiringPi && ./build
 
-COPY . /home/knx/
-RUN make --always-make
-RUN chmod +x knx-monitor
+#COPY . /home/knx/
+COPY include ./include
+COPY Makefile .
+COPY knx-monitor.service .
+COPY monitorknxrf.cpp .
+#RUN make --always-make
+#RUN chmod +x knx-monitor
 
 #COPY ./knx-monitor /home/knx/
 
