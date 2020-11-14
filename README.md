@@ -33,7 +33,7 @@ openhabian@hab:~/MonitorKNXRF$ make
 
 Run the program with debug level 2:
 ```
-./knx-monitor
+./knx-monitor 2
 ```
 Change set temperature on any of your thermostats, and wait a minimum 15 seconds.
 Press Ctrl+C to stop the program.
@@ -72,3 +72,20 @@ sudo systemctl enable knx-monitor.service
  * home/uponor/<SENSOR_ID>/temperature-target
  * home/uponor/<SENSOR_ID>/battery-ok
  * home/uponor/<SENSOR_ID>/rssi
+
+ 
+# Docker
+ The docker is still in progress. Goal is to have everything build and running in a docker container
+ 
+## Build image 
+ 
+ Build docker image
+ ```
+ docker build -t knx .
+ ```
+ 
+ Test docker image
+ ```
+ docker run -it --rm knx bash
+ ```
+ 
