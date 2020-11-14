@@ -9,4 +9,4 @@ WORKDIR /home/knx
 COPY ./knx-monitor /home/knx/
 RUN chmod +x knx-monitor
 
-ENTRYPOINT ["/home/knx/knx-monitor"]
+#ENTRYPOINT ["/home/knx/knx-monitor"]
